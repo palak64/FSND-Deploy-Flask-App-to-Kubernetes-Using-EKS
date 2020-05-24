@@ -166,6 +166,7 @@ curl --request GET 'http://127.0.0.1:80/contents' -H "Authorization: Bearer ${TO
     KubectlRoleName : use the name of the role you created for kubectl above
     ```
     Save this file.
+    
    3.5 Create a stack for CodePipeline
        Go the the CloudFormation service in the aws console.
        Press the 'Create Stack' button.
@@ -175,6 +176,7 @@ curl --request GET 'http://127.0.0.1:80/contents' -H "Authorization: Bearer ${TO
        Create the stack.
        You can check it's status in the CloudFormation console.
        Check the pipeline works. Once the stack is successfully created, commit a change to the master branch of your github repo. Then, in the aws console go to the CodePipeline UI. You should see that the build is running.
+       
    3.6 To test your api endpoints, get the external ip for your service:
    ```
    kubectl get services simple-jwt-api -o wide
