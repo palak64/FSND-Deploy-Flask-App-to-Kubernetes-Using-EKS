@@ -78,6 +78,7 @@ curl --request GET 'http://127.0.0.1:80/contents' -H "Authorization: Bearer ${TO
    eksctl create cluster --name simple-jwt-api
    ```
 2. Create an IAM role that CodeBuild can use to interact with EKS. :
+
    2.1 Set an environment variable ACCOUNT_ID to the value of your AWS account id. You can do this with awscli:
    ```
    ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
@@ -99,7 +100,9 @@ curl --request GET 'http://127.0.0.1:80/contents' -H "Authorization: Bearer ${TO
    aws iam put-role-policy --role-name UdacityFlaskDeployCBKubectlRole --policy-name eks-describe --policy-document file://iam-role-policy
    ```
    2.6 You have now created a role named 'UdacityFlaskDeployCBKubectlRole'
+   
        Grant the role access to the cluster. The 'aws-auth ConfigMap' is used to grant role based access control to your cluster.
+       
        Get the current configmap and save it to a file:
    ```
    kubectl get -n kube-system configmap/aws-auth -o yaml > /tmp/aws-auth-patch.yml
@@ -144,7 +147,9 @@ curl --request GET 'http://127.0.0.1:80/contents' -H "Authorization: Bearer ${TO
    ```
 
 3. Create the Pipeline
+
    3.1 Generate a GitHub access token. A Github acces token will allow CodePipeline to monitor when a repo is changed. A token can be generated here. You should generate the token with full control of private repositories, as shown in the image below. Be sure to save the token somewhere that is secure.
+   
    3.2 The file buildspec.yml instructs CodeBuild. We need a way to pass your jwt secret to the app in kubernetes securly. You will be using AWS Parameter Store to do this. First add the following to your buildspec.yml file:
    ```
    env:
@@ -167,14 +172,14 @@ curl --request GET 'http://127.0.0.1:80/contents' -H "Authorization: Bearer ${TO
    Save this file.
     
    3.5 Create a stack for CodePipeline.
-   Go the the CloudFormation service in the aws console.
-   Press the 'Create Stack' button.
-   Choose the 'Upload template to S3' option and upload the template file 'ci-cd-codepipeline.cfn.yml'
-   Press 'Next'. Give the stack a name, fill in your GitHub login and the Github access token generated in step 1.
-   Confirm the cluster name matches your cluster, the 'kubectl IAM role' matches the role you created above, and the repository matches the name of your forked repo.
-   Create the stack.
-   You can check it's status in the CloudFormation console.
-   Check the pipeline works. Once the stack is successfully created, commit a change to the master branch of your github repo. Then, in the aws console go to the CodePipeline UI. You should see that the build is running.
+   - Go the the CloudFormation service in the aws console.
+   - Press the 'Create Stack' button.
+   - Choose the 'Upload template to S3' option and upload the template file 'ci-cd-codepipeline.cfn.yml'
+   - Press 'Next'. Give the stack a name, fill in your GitHub login and the Github access token generated in step 1.
+   - Confirm the cluster name matches your cluster, the 'kubectl IAM role' matches the role you created above, and the repository matches the name of your forked repo.
+   - Create the stack.
+   - You can check it's status in the CloudFormation console.
+   - Check the pipeline works. Once the stack is successfully created, commit a change to the master branch of your github repo. Then, in the aws console go to the CodePipeline UI. You should see that the build is running.
        
    3.6 To test your api endpoints, get the external ip for your service:
    ```
