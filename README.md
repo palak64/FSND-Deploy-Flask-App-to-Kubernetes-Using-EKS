@@ -167,15 +167,15 @@ curl --request GET 'http://127.0.0.1:80/contents' -H "Authorization: Bearer ${TO
     ```
     Save this file.
     
-   3.5 Create a stack for CodePipeline 
-      Go the the CloudFormation service in the aws console.
-      Press the 'Create Stack' button.
-      Choose the 'Upload template to S3' option and upload the template file 'ci-cd-codepipeline.cfn.yml'
-      Press 'Next'. Give the stack a name, fill in your GitHub login and the Github access token generated in step 1.
-      Confirm the cluster name matches your cluster, the 'kubectl IAM role' matches the role you created above, and the repository matches the name of your forked repo.
-      Create the stack.
-      You can check it's status in the CloudFormation console.
-      Check the pipeline works. Once the stack is successfully created, commit a change to the master branch of your github repo. Then, in the aws console go to the CodePipeline UI. You should see that the build is running.
+   3.5 Create a stack for CodePipeline.
+   Go the the CloudFormation service in the aws console.
+   Press the 'Create Stack' button.
+   Choose the 'Upload template to S3' option and upload the template file 'ci-cd-codepipeline.cfn.yml'
+   Press 'Next'. Give the stack a name, fill in your GitHub login and the Github access token generated in step 1.
+   Confirm the cluster name matches your cluster, the 'kubectl IAM role' matches the role you created above, and the repository matches the name of your forked repo.
+   Create the stack.
+   You can check it's status in the CloudFormation console.
+   Check the pipeline works. Once the stack is successfully created, commit a change to the master branch of your github repo. Then, in the aws console go to the CodePipeline UI. You should see that the build is running.
        
    3.6 To test your api endpoints, get the external ip for your service:
    ```
